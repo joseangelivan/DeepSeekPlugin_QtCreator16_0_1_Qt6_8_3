@@ -1,0 +1,18 @@
+{
+    "Id" : "deepseekplugin_qtcreator16_0_1_qt6_8_3",
+    "Name" : "DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3",
+    "Version" : "0.0.1",
+    "CompatVersion" : "0.0.1",
+    "Vendor" : "Iván Rubianes",
+    "VendorId" : "ivánrubianes",
+    "Copyright" : "(C) Iván Rubianes",
+    "License" : "GPL-3.0-only WITH Qt-GPL-exception-1.0",
+    "Description" : "DeepSeek AI integration for Qt Creator",
+    "Url" : "https://github.com/joseangelivan/DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3",
+    "DocumentationUrl" : "",
+    "Dependencies": [
+               {"Id": "Core", "Version": "16.0.1"},
+               {"Id": "ProjectExplorer", "Version": "16.0.1"},
+               {"Id": "TextEditor", "Version": "16.0.1"}
+           ]
+}
