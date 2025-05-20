@@ -67,7 +67,7 @@ public:
 
 
 
-          // addAutoReleasedObject(new DeepSeek::Internal::DeepSeekOptionsPage);
+        ExtensionSystem::PluginManager::addObject(new DeepSeek::Internal::DeepSeekOptionsPage);
 
 
     }

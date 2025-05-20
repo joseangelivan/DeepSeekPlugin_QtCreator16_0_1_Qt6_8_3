@@ -66,9 +66,11 @@ int DeepSeekOptionsPageWidget::maxTokens() const { return maxTokensSpinBox->valu
 
 
 
-DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ /*QObject *parent*/)
-    : Core::IOptionsPage(), // Changed from IOptionsPageProvider to IOptionsPage
+DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ QObject *parent):
+    Core::IOptionsPage(), // Changed from IOptionsPageProvider to IOptionsPage
+    QObject(parent),
       // m_settings(settings),
+
       m_widget(nullptr)/*,
       ui(nullptr)*/
 {

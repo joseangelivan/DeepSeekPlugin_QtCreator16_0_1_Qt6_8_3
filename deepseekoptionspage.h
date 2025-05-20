@@ -59,11 +59,11 @@ class DeepSeekOptionsPage;
 }
 
 // Configuration page for the DeepSeek plugin
-class DeepSeekOptionsPage : /*public QObject, */public Core::IOptionsPage
+class DeepSeekOptionsPage : public QObject, public Core::IOptionsPage
 {
-
+     Q_OBJECT
 public:
-    explicit DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/);
+     explicit DeepSeekOptionsPage(QObject *parent = nullptr);
     ~DeepSeekOptionsPage() override;
 
     QWidget *widget() override;
