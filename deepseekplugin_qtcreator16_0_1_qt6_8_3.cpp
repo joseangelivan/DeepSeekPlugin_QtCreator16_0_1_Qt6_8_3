@@ -1,6 +1,9 @@
 #include "deepseekplugin_qtcreator16_0_1_qt6_8_3constants.h"
 #include "deepseekplugin_qtcreator16_0_1_qt6_8_3tr.h"
 
+
+// #include "ui_deepseekoptionspage.h"
+
 #include <coreplugin/actionmanager/actioncontainer.h>
 #include <coreplugin/actionmanager/actionmanager.h>
 #include <coreplugin/actionmanager/command.h>
@@ -8,12 +11,16 @@
 #include <coreplugin/icontext.h>
 #include <coreplugin/icore.h>
 
+#include <extensionsystem/pluginmanager.h> // << Necesario
+
 #include <extensionsystem/iplugin.h>
 
 #include <QAction>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMessageBox>
+
+#include "deepseekoptionspage.h"
 
 using namespace Core;
 
@@ -48,15 +55,21 @@ public:
         //    bool IPlugin::initialize(const QStringList &arguments, QString *errorString)
         // overload.
 
-        ActionContainer *menu = ActionManager::createMenu(Constants::MENU_ID);
-        menu->menu()->setTitle(Tr::tr("DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3"));
-        ActionManager::actionContainer(Core::Constants::M_TOOLS)->addMenu(menu);
+        // ActionContainer *menu = ActionManager::createMenu(Constants::MENU_ID);
+        // menu->menu()->setTitle(Tr::tr("DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3"));
+        // ActionManager::actionContainer(Core::Constants::M_TOOLS)->addMenu(menu);
 
-        ActionBuilder(this, Constants::ACTION_ID)
-            .addToContainer(Constants::MENU_ID)
-            .setText(Tr::tr("DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3 Action"))
-            .setDefaultKeySequence(Tr::tr("Ctrl+Alt+Meta+A"))
-            .addOnTriggered(this, &DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3Plugin::triggerAction);
+        // ActionBuilder(this, Constants::ACTION_ID)
+        //     .addToContainer(Constants::MENU_ID)
+        //     .setText(Tr::tr("DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3 Action"))
+        //     .setDefaultKeySequence(Tr::tr("Ctrl+Alt+Meta+A"))
+        //     .addOnTriggered(this, &DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3Plugin::triggerAction);
+
+
+
+          // addAutoReleasedObject(new DeepSeek::Internal::DeepSeekOptionsPage);
+
+
     }
 
     void extensionsInitialized() final

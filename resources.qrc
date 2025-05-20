@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/deepseek.png</file>
+    </qresource>
+</RCC>
