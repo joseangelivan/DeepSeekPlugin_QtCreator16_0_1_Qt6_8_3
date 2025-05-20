@@ -78,7 +78,7 @@ DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ QObject
     // Registrar la categoría con su icono
     Core::IOptionsPage::registerCategory("DeepSeek.Options",
                                          QObject::tr("DeepSeek"),
-                                         Utils::FilePath(":/images/deepseek.png"));
+                                         Utils::FilePath(":/resources/images/deepseek.png"));
 
     setId("DeepSeek.Options");
     setDisplayName(QObject::tr("DeepSeek"));

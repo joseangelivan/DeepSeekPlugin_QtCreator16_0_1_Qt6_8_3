@@ -51,15 +51,16 @@ add_qtc_plugin(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
     deepseekoptionspage.ui
 )
 
-target_sources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
-  PRIVATE
-    resources.qrc
-)
-
 # target_sources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
 #   PRIVATE
-#     deepseekoptionspage.cpp deepseekoptionspage.h deepseekoptionspage.ui
+#     resources.qrc
 # )
+
+qt_add_resources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3 "resources"
+  FILES
+    images/deepseek.png
+)
+
 
 # Enable the Run button in Qt Creator
 get_target_property(QtCreatorCorePath QtCreator::Core LOCATION)
