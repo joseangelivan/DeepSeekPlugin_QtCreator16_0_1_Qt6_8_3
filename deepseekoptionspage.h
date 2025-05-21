@@ -19,15 +19,55 @@
 #include <QSpinBox>
 #include <QSpacerItem>
 #include <QSizePolicy>
-
+#include <QPushButton>
+#include <QComboBox>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QPointer>
 #include <QSettings>
+#include <QMessageBox>
 
 namespace DeepSeek {
 namespace Internal {
 
 // class DeepSeekSettings;
 
+
+
+// class DeepSeekOptionsPageWidget : public QWidget
+// {
+//     Q_OBJECT
+
+// public:
+//     explicit DeepSeekOptionsPageWidget(QWidget *parent = nullptr);
+
+//     QString apiKey() const;
+//     QString apiUrl() const;
+//     QString model() const;
+//     QString systemPrompt() const;
+//     double temperature() const;
+//     int maxTokens() const;
+
+//     // Nuevos setters para cargar configuraciones
+//     void setApiKey(const QString &key);
+//     void setApiUrl(const QString &url);
+//     void setModel(const QString &model);
+//     void setSystemPrompt(const QString &prompt);
+//     void setTemperature(double temp);
+//     void setMaxTokens(int tokens);
+
+// private:
+//     QLineEdit *apiKeyEdit;
+//     QLineEdit *apiUrlEdit;
+//     QLineEdit *modelEdit;
+//     QPlainTextEdit *systemPromptEdit;
+//     QDoubleSpinBox *temperatureSpinBox;
+//     QSpinBox *maxTokensSpinBox;
+// };
 
 
 class DeepSeekOptionsPageWidget : public QWidget
@@ -37,6 +77,7 @@ class DeepSeekOptionsPageWidget : public QWidget
 public:
     explicit DeepSeekOptionsPageWidget(QWidget *parent = nullptr);
 
+    // Getters existentes
     QString apiKey() const;
     QString apiUrl() const;
     QString model() const;
@@ -44,7 +85,7 @@ public:
     double temperature() const;
     int maxTokens() const;
 
-    // Nuevos setters para cargar configuraciones
+    // Setters para cargar configuraciones
     void setApiKey(const QString &key);
     void setApiUrl(const QString &url);
     void setModel(const QString &model);
@@ -52,20 +93,36 @@ public:
     void setTemperature(double temp);
     void setMaxTokens(int tokens);
 
+private slots:
+    // Slots para manejar el botón de conexión y la selección de modelos
+    void onConnectButtonClicked();
+    void onModelSelectionChanged(int index);
+    void handleNetworkReply();
+
 private:
+    // Método para listar modelos
+    void fetchModels();
+
+    // Widgets
     QLineEdit *apiKeyEdit;
     QLineEdit *apiUrlEdit;
-    QLineEdit *modelEdit;
+    QComboBox *modelComboBox;
+    QPlainTextEdit *modelDescriptionEdit;
     QPlainTextEdit *systemPromptEdit;
     QDoubleSpinBox *temperatureSpinBox;
     QSpinBox *maxTokensSpinBox;
+    QPushButton *connectButton;
+
+    // Gestor de red para conexiones API
+    QNetworkAccessManager networkManager;
+    QPointer<QNetworkReply> currentReply;
+
+    // Almacenamiento de descripciones de modelos
+    QMap<QString, QString> modelDescriptions;
+
+
+    QString getModelDescription(const QString &modelId);
 };
-
-
-
-// namespace Ui {
-// class DeepSeekOptionsPage;
-// }
 
 // Configuration page for the DeepSeek plugin
 class DeepSeekOptionsPage : public QObject, public Core::IOptionsPage
