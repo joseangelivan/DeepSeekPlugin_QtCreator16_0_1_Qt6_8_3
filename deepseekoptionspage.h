@@ -44,6 +44,14 @@ public:
     double temperature() const;
     int maxTokens() const;
 
+    // Nuevos setters para cargar configuraciones
+    void setApiKey(const QString &key);
+    void setApiUrl(const QString &url);
+    void setModel(const QString &model);
+    void setSystemPrompt(const QString &prompt);
+    void setTemperature(double temp);
+    void setMaxTokens(int tokens);
+
 private:
     QLineEdit *apiKeyEdit;
     QLineEdit *apiUrlEdit;
@@ -84,6 +92,9 @@ private:
     // Utils::Id m_category;
     // QString m_displayCategory;
     Utils::FilePath m_categoryIconPath;
+
+    // Método para cargar configuraciones
+    void loadSettings();
 };
 
 } // namespace Internal

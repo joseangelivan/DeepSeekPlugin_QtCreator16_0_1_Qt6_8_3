@@ -62,7 +62,12 @@ QString DeepSeekOptionsPageWidget::systemPrompt() const { return systemPromptEdi
 double DeepSeekOptionsPageWidget::temperature() const { return temperatureSpinBox->value(); }
 int DeepSeekOptionsPageWidget::maxTokens() const { return maxTokensSpinBox->value(); }
 
-
+void DeepSeekOptionsPageWidget::setApiKey(const QString &key) { apiKeyEdit->setText(key); }
+void DeepSeekOptionsPageWidget::setApiUrl(const QString &url) { apiUrlEdit->setText(url); }
+void DeepSeekOptionsPageWidget::setModel(const QString &model) { modelEdit->setText(model); }
+void DeepSeekOptionsPageWidget::setSystemPrompt(const QString &prompt) { systemPromptEdit->setPlainText(prompt); }
+void DeepSeekOptionsPageWidget::setTemperature(double temp) { temperatureSpinBox->setValue(temp); }
+void DeepSeekOptionsPageWidget::setMaxTokens(int tokens) { maxTokensSpinBox->setValue(tokens); }
 
 
 
@@ -110,19 +115,33 @@ DeepSeekOptionsPage::~DeepSeekOptionsPage()
     // delete ui;
 }
 
+// Método para cargar configuraciones
+void DeepSeekOptionsPage::loadSettings()
+{
+    if (!m_widget)
+        return;
+
+    auto settings = Core::ICore::settings();
+    settings->beginGroup("DeepSeek");
+
+    m_widget->setApiKey(settings->value("ApiKey", "").toString());
+    m_widget->setApiUrl(settings->value("ApiUrl", "https://api.deepseek.com/v1").toString());
+    m_widget->setModel(settings->value("Model", "deepseek-chat").toString());
+    m_widget->setSystemPrompt(settings->value("SystemPrompt", "You are a helpful AI assistant").toString());
+    m_widget->setTemperature(settings->value("Temperature", 0.7).toDouble());
+    m_widget->setMaxTokens(settings->value("MaxTokens", 2048).toInt());
+
+    settings->endGroup();
+}
+
+
 QWidget *DeepSeekOptionsPage::widget()
 {
     if (!m_widget) {
          m_widget = new DeepSeekOptionsPageWidget;
-    //     ui = new Ui::DeepSeekOptionsPage;
-    //     ui->setupUi(m_widget);
 
-    //     ui->apiKeyEdit->setText(m_settings->apiKey());
-    //     ui->apiUrlEdit->setText(m_settings->apiUrl());
-    //     ui->modelEdit->setText(m_settings->model());
-    //     ui->systemPromptEdit->setPlainText(m_settings->systemPrompt());
-    //     ui->temperatureSpinBox->setValue(m_settings->temperature());
-    //     ui->maxTokensSpinBox->setValue(m_settings->maxTokens());
+        // Cargar configuraciones guardadas inmediatamente después de crear el widget
+        loadSettings();
     }
     return qobject_cast<QWidget*>(m_widget);
 }
