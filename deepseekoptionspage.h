@@ -63,12 +63,13 @@ class DeepSeekOptionsPage : public QObject, public Core::IOptionsPage
 {
      Q_OBJECT
 public:
-     explicit DeepSeekOptionsPage(QObject *parent = nullptr);
+     explicit DeepSeekOptionsPage(/*QObject *parent = nullptr*/);
     ~DeepSeekOptionsPage() override;
 
     QWidget *widget() override;
     void apply() override;
     void finish() override;
+
 
     // Methods to handle category settings
     // void setCategory(const Utils::Id &category);
@@ -79,9 +80,9 @@ private:
     // DeepSeekSettings *m_settings;
     QPointer<QWidget> m_widget;
     // Ui::DeepSeekOptionsPage *ui;
-    Utils::Id m_category;
+    // Utils::Id m_category;
     // QString m_displayCategory;
-    Utils::FilePath m_categoryIconPath;
+    // Utils::FilePath m_categoryIconPath;
 };
 
 } // namespace Internal

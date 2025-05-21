@@ -66,9 +66,9 @@ int DeepSeekOptionsPageWidget::maxTokens() const { return maxTokensSpinBox->valu
 
 
 
-DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ QObject *parent):
+DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ /*QObject *parent*/):
     Core::IOptionsPage(), // Changed from IOptionsPageProvider to IOptionsPage
-    QObject(parent),
+    // QObject(parent),
       // m_settings(settings),
 
       m_widget(nullptr)/*,
@@ -78,7 +78,7 @@ DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ QObject
     // Registrar la categoría con su icono
     Core::IOptionsPage::registerCategory("DeepSeek.Options",
                                          QObject::tr("DeepSeek"),
-                                         Utils::FilePath(":/resources/images/deepseek.png"));
+                                         Utils::FilePath(":/images/deepseek.png"));
 
     setId("DeepSeek.Options");
     setDisplayName(QObject::tr("DeepSeek"));

@@ -32,6 +32,22 @@ if(WITH_TESTS)
   enable_testing()
 endif()
 
+
+set(RESOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc")
+
+# # Versión CORREGIDA del qt_add_resources
+# qt_add_resources(DeepSeekPlugin_RESOURCES
+#   PREFIX "/DeepSeekPlugin"
+#   BASE "${CMAKE_CURRENT_SOURCE_DIR}"
+#   FILES
+#     "images/deepseek.png"  # Ruta relativa desde CMakeLists.txt
+#   OUTPUT_TARGETS resource_targets
+# )
+
+# target_sources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3 PRIVATE
+#     ${RESOURCE_FILE}
+# )
+
 add_qtc_plugin(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
   PLUGIN_DEPENDS
     QtCreator::Core
@@ -40,8 +56,7 @@ add_qtc_plugin(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
     QtCreator::ExtensionSystem
     QtCreator::Utils
   SOURCES
-    .github/workflows/build_cmake.yml
-    .github/workflows/README.md
+   ${DeepSeekPlugin_RESOURCES}
     README.md
     deepseekplugin_qtcreator16_0_1_qt6_8_3.cpp
     deepseekplugin_qtcreator16_0_1_qt6_8_3constants.h
@@ -49,17 +64,19 @@ add_qtc_plugin(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
     deepseekoptionspage.cpp
     deepseekoptionspage.h
     deepseekoptionspage.ui
+
 )
 
-# target_sources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
-#   PRIVATE
-#     resources.qrc
+target_sources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
+  PRIVATE
+    ${RESOURCE_FILE}
+)
+
+# qt_add_resources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3 "resources"
+#   FILES
+#     images/deepseek.png
 # )
 
-qt_add_resources(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3 "resources"
-  FILES
-    images/deepseek.png
-)
 
 
 # Enable the Run button in Qt Creator
