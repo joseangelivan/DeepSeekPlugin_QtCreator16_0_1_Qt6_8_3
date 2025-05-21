@@ -21,6 +21,7 @@
 #include <QSizePolicy>
 
 #include <QPointer>
+#include <QSettings>
 
 namespace DeepSeek {
 namespace Internal {
@@ -54,9 +55,9 @@ private:
 
 
 
-namespace Ui {
-class DeepSeekOptionsPage;
-}
+// namespace Ui {
+// class DeepSeekOptionsPage;
+// }
 
 // Configuration page for the DeepSeek plugin
 class DeepSeekOptionsPage : public QObject, public Core::IOptionsPage
@@ -78,11 +79,11 @@ public:
 
 private:
     // DeepSeekSettings *m_settings;
-    QPointer<QWidget> m_widget;
+    QPointer<DeepSeekOptionsPageWidget> m_widget;
     // Ui::DeepSeekOptionsPage *ui;
     // Utils::Id m_category;
     // QString m_displayCategory;
-    // Utils::FilePath m_categoryIconPath;
+    Utils::FilePath m_categoryIconPath;
 };
 
 } // namespace Internal

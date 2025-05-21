@@ -68,7 +68,7 @@ int DeepSeekOptionsPageWidget::maxTokens() const { return maxTokensSpinBox->valu
 
 DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ /*QObject *parent*/):
     Core::IOptionsPage(), // Changed from IOptionsPageProvider to IOptionsPage
-    // QObject(parent),
+    QObject(),
       // m_settings(settings),
 
       m_widget(nullptr)/*,
@@ -76,18 +76,18 @@ DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ /*QObje
 {
 
     // Registrar la categoría con su icono
-    Core::IOptionsPage::registerCategory("DeepSeek.Options",
-                                         QObject::tr("DeepSeek"),
+    Core::IOptionsPage::registerCategory("Z.DeepSeek",
+                                         tr("DeepSeek"),
                                          Utils::FilePath(":/images/deepseek.png"));
 
-    setId("DeepSeek.Options");
-    setDisplayName(QObject::tr("DeepSeek"));
+    setId("DeepSeek.Settings");
+    setDisplayName(tr("DeepSeek"));
 
 
 
 
     // Set default category
-    setCategory(Utils::Id("DeepSeek"));
+    setCategory(Utils::Id("Z.DeepSeek"));
 
     // setCategoryIconPath(":/deepseekplugin/icon.png");
 
@@ -98,6 +98,11 @@ DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ /*QObje
 
     // Store parent for safe deletions
     // setParent(parent);
+
+    setId("DeepSeek.Settings");
+    setDisplayName(tr("DeepSeek"));
+    setCategory(Utils::Id("Z.DeepSeek"));
+
 }
 
 DeepSeekOptionsPage::~DeepSeekOptionsPage()
@@ -119,7 +124,7 @@ QWidget *DeepSeekOptionsPage::widget()
     //     ui->temperatureSpinBox->setValue(m_settings->temperature());
     //     ui->maxTokensSpinBox->setValue(m_settings->maxTokens());
     }
-    return m_widget;
+    return qobject_cast<QWidget*>(m_widget);
 }
 
 void DeepSeekOptionsPage::apply()
@@ -136,6 +141,16 @@ void DeepSeekOptionsPage::apply()
 
     // // Use the global QSettings instance provided by Qt Creator
     // m_settings->saveSettings(Core::ICore::settings());
+
+    auto settings = Core::ICore::settings();
+    settings->beginGroup("DeepSeek");
+    settings->setValue("ApiKey", m_widget->apiKey());
+    settings->setValue("ApiUrl", m_widget->apiUrl());
+    settings->setValue("Model", m_widget->model());
+    settings->setValue("SystemPrompt", m_widget->systemPrompt());
+    settings->setValue("Temperature", m_widget->temperature());
+    settings->setValue("MaxTokens", m_widget->maxTokens());
+    settings->endGroup();
 }
 
 void DeepSeekOptionsPage::finish()
