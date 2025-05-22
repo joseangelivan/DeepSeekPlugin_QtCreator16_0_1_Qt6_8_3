@@ -89,7 +89,7 @@ DeepSeekOptionsPageWidget::DeepSeekOptionsPageWidget(QWidget *parent)
     formLayout->addRow(apiUrlLabel, apiUrlEdit);
 
     // Botón de conexión
-    connectButton = new QPushButton(tr("Connect"), this);
+    connectButton = new QPushButton(tr("Conectar y obtener modelos"), this);
     auto *connectLayout = new QHBoxLayout;
     connectLayout->addWidget(connectButton);
     connectLayout->addStretch();
@@ -97,35 +97,35 @@ DeepSeekOptionsPageWidget::DeepSeekOptionsPageWidget(QWidget *parent)
     layout->addLayout(connectLayout);
 
     // Combobox para modelos
-    auto *modelLabel = new QLabel(tr("Model:"), this);
+    auto *modelLabel = new QLabel(tr("Modelo:"), this);
     modelComboBox = new QComboBox(this);
     modelComboBox->setEditable(false);
     formLayout->addRow(modelLabel, modelComboBox);
 
     // Campo para descripción del modelo
-    auto *modelDescLabel = new QLabel(tr("Model Description:"), this);
+    auto *modelDescLabel = new QLabel(tr("Descripción del modelo:"), this);
     modelDescriptionEdit = new QPlainTextEdit(this);
     modelDescriptionEdit->setReadOnly(true);
     modelDescriptionEdit->setMaximumHeight(80);
     formLayout->addRow(modelDescLabel, modelDescriptionEdit);
 
     // Campos existentes para system prompt, temperatura y max tokens
-    auto *systemPromptLabel = new QLabel(tr("System Prompt:"), this);
+    auto *systemPromptLabel = new QLabel(tr("Prompt del Sistema:"), this);
     systemPromptLabel->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
     systemPromptEdit = new QPlainTextEdit(this);
     systemPromptEdit->setMinimumSize(QSize(0, 100));
     formLayout->addRow(systemPromptLabel, systemPromptEdit);
 
-    auto *temperatureLabel = new QLabel(tr("Temperature:"), this);
+    auto *temperatureLabel = new QLabel(tr("Temperatura:"), this);
     temperatureSpinBox = new QDoubleSpinBox(this);
     temperatureSpinBox->setRange(0.01, 2.0);
     temperatureSpinBox->setSingleStep(0.1);
     temperatureSpinBox->setValue(0.7);
     formLayout->addRow(temperatureLabel, temperatureSpinBox);
 
-    auto *maxTokensLabel = new QLabel(tr("Max Tokens:"), this);
+    auto *maxTokensLabel = new QLabel(tr("Limite de Tokens:"), this);
     maxTokensSpinBox = new QSpinBox(this);
-    maxTokensSpinBox->setRange(16, 16384);
+    maxTokensSpinBox->setRange(16, 32000);
     maxTokensSpinBox->setValue(2048);
     formLayout->addRow(maxTokensLabel, maxTokensSpinBox);
 
@@ -230,7 +230,7 @@ void DeepSeekOptionsPageWidget::handleNetworkReply()
 {
     // Restablecer botón
     connectButton->setEnabled(true);
-    connectButton->setText(tr("Connect"));
+    connectButton->setText(tr("Conectar y obtener modelos"));
 
     if (!currentReply) {
         return;
@@ -289,8 +289,8 @@ void DeepSeekOptionsPageWidget::handleNetworkReply()
         }
     } else {
         // Error de red
-        QMessageBox::warning(this, tr("Connection Error"),
-                             tr("Failed to fetch models: %1").arg(currentReply->errorString()));
+        QMessageBox::warning(this, tr("Error de conexión"),
+                             tr("No se pudo obtener el modelo: %1").arg(currentReply->errorString()));
         modelComboBox->setCurrentIndex(0); // "Without Model"
     }
 
@@ -358,7 +358,7 @@ void DeepSeekOptionsPage::loadSettings()
 
     m_widget->setApiKey(settings->value("ApiKey", "").toString());
     m_widget->setApiUrl(settings->value("ApiUrl", "https://api.deepseek.com/v1").toString());
-    m_widget->setModel(settings->value("Model", "deepseek-chat").toString());
+    m_widget->setModel(settings->value("Model", "Without Model").toString());
     m_widget->setSystemPrompt(settings->value("SystemPrompt", "You are a helpful AI assistant").toString());
     m_widget->setTemperature(settings->value("Temperature", 0.7).toDouble());
     m_widget->setMaxTokens(settings->value("MaxTokens", 2048).toInt());
