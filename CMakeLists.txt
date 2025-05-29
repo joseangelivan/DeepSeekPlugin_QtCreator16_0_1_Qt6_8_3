@@ -64,6 +64,8 @@ add_qtc_plugin(DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3
     deepseekoptionspage.cpp
     deepseekoptionspage.h
     deepseekoptionspage.ui
+    deepseeknavigationchat.cpp
+    deepseeknavigationchat.h
 
 )
 

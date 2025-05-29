@@ -1,75 +1,8 @@
 #include "deepseekoptionspage.h"
-// #include "ui_deepseekoptionspage.h"
-// #include "deepseeksettings.h"
-// #include "deepseektr.h"
-
-
-
 #include <QSettings>
 
 namespace DeepSeek {
 namespace Internal {
-
-
-// DeepSeekOptionsPageWidget::DeepSeekOptionsPageWidget(QWidget *parent)
-//     : QWidget(parent)
-// {
-//     // Crear los widgets
-//     auto *layout = new QVBoxLayout(this);
-//     auto *formLayout = new QFormLayout;
-
-//     auto *apiKeyLabel = new QLabel(tr("API Key:"), this);
-//     apiKeyEdit = new QLineEdit(this);
-//     apiKeyEdit->setEchoMode(QLineEdit::Password);
-//     formLayout->addRow(apiKeyLabel, apiKeyEdit);
-
-//     auto *apiUrlLabel = new QLabel(tr("API URL:"), this);
-//     apiUrlEdit = new QLineEdit(this);
-//     formLayout->addRow(apiUrlLabel, apiUrlEdit);
-
-//     auto *modelLabel = new QLabel(tr("Model:"), this);
-//     modelEdit = new QLineEdit(this);
-//     formLayout->addRow(modelLabel, modelEdit);
-
-//     auto *systemPromptLabel = new QLabel(tr("System Prompt:"), this);
-//     systemPromptLabel->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
-//     systemPromptEdit = new QPlainTextEdit(this);
-//     systemPromptEdit->setMinimumSize(QSize(0, 100));
-//     formLayout->addRow(systemPromptLabel, systemPromptEdit);
-
-//     auto *temperatureLabel = new QLabel(tr("Temperature:"), this);
-//     temperatureSpinBox = new QDoubleSpinBox(this);
-//     temperatureSpinBox->setRange(0.01, 2.0);
-//     temperatureSpinBox->setSingleStep(0.1);
-//     temperatureSpinBox->setValue(0.7);
-//     formLayout->addRow(temperatureLabel, temperatureSpinBox);
-
-//     auto *maxTokensLabel = new QLabel(tr("Max Tokens:"), this);
-//     maxTokensSpinBox = new QSpinBox(this);
-//     maxTokensSpinBox->setRange(16, 16384);
-//     maxTokensSpinBox->setValue(2048);
-//     formLayout->addRow(maxTokensLabel, maxTokensSpinBox);
-
-//     layout->addLayout(formLayout);
-//     layout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
-// }
-
-// // Métodos para obtener valores si se requieren
-// QString DeepSeekOptionsPageWidget::apiKey() const { return apiKeyEdit->text(); }
-// QString DeepSeekOptionsPageWidget::apiUrl() const { return apiUrlEdit->text(); }
-// QString DeepSeekOptionsPageWidget::model() const { return modelEdit->text(); }
-// QString DeepSeekOptionsPageWidget::systemPrompt() const { return systemPromptEdit->toPlainText(); }
-// double DeepSeekOptionsPageWidget::temperature() const { return temperatureSpinBox->value(); }
-// int DeepSeekOptionsPageWidget::maxTokens() const { return maxTokensSpinBox->value(); }
-
-// void DeepSeekOptionsPageWidget::setApiKey(const QString &key) { apiKeyEdit->setText(key); }
-// void DeepSeekOptionsPageWidget::setApiUrl(const QString &url) { apiUrlEdit->setText(url); }
-// void DeepSeekOptionsPageWidget::setModel(const QString &model) { modelEdit->setText(model); }
-// void DeepSeekOptionsPageWidget::setSystemPrompt(const QString &prompt) { systemPromptEdit->setPlainText(prompt); }
-// void DeepSeekOptionsPageWidget::setTemperature(double temp) { temperatureSpinBox->setValue(temp); }
-// void DeepSeekOptionsPageWidget::setMaxTokens(int tokens) { maxTokensSpinBox->setValue(tokens); }
-
-
 
 DeepSeekOptionsPageWidget::DeepSeekOptionsPageWidget(QWidget *parent)
     : QWidget(parent)

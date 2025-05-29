@@ -2,6 +2,7 @@
 
 #include <coreplugin/icore.h>
 #include <coreplugin/dialogs/ioptionspage.h>
+
 #include <utils/id.h>
 #include <utils/filepath.h>
 
@@ -33,42 +34,6 @@
 
 namespace DeepSeek {
 namespace Internal {
-
-// class DeepSeekSettings;
-
-
-
-// class DeepSeekOptionsPageWidget : public QWidget
-// {
-//     Q_OBJECT
-
-// public:
-//     explicit DeepSeekOptionsPageWidget(QWidget *parent = nullptr);
-
-//     QString apiKey() const;
-//     QString apiUrl() const;
-//     QString model() const;
-//     QString systemPrompt() const;
-//     double temperature() const;
-//     int maxTokens() const;
-
-//     // Nuevos setters para cargar configuraciones
-//     void setApiKey(const QString &key);
-//     void setApiUrl(const QString &url);
-//     void setModel(const QString &model);
-//     void setSystemPrompt(const QString &prompt);
-//     void setTemperature(double temp);
-//     void setMaxTokens(int tokens);
-
-// private:
-//     QLineEdit *apiKeyEdit;
-//     QLineEdit *apiUrlEdit;
-//     QLineEdit *modelEdit;
-//     QPlainTextEdit *systemPromptEdit;
-//     QDoubleSpinBox *temperatureSpinBox;
-//     QSpinBox *maxTokensSpinBox;
-// };
-
 
 class DeepSeekOptionsPageWidget : public QWidget
 {
@@ -136,18 +101,8 @@ public:
     void apply() override;
     void finish() override;
 
-
-    // Methods to handle category settings
-    // void setCategory(const Utils::Id &category);
-    // void setDisplayCategory(const QString &displayCategory);
-    // void setCategoryIconPath(const Utils::FilePath &iconPath);
-
 private:
-    // DeepSeekSettings *m_settings;
     QPointer<DeepSeekOptionsPageWidget> m_widget;
-    // Ui::DeepSeekOptionsPage *ui;
-    // Utils::Id m_category;
-    // QString m_displayCategory;
     Utils::FilePath m_categoryIconPath;
 
     // Método para cargar configuraciones
