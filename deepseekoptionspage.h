@@ -42,8 +42,6 @@ class DeepSeekOptionsPageWidget : public QWidget
 
 public:
     explicit DeepSeekOptionsPageWidget(QWidget *parent = nullptr);
-
-    // Getters existentes
     QString apiKey() const;
     QString apiUrl() const;
     QString model() const;
@@ -60,13 +58,11 @@ public:
     void setMaxTokens(int tokens);
 
 private slots:
-    // Slots para manejar el botón de conexión y la selección de modelos
     void onConnectButtonClicked();
     void onModelSelectionChanged(int index);
     void handleNetworkReply();
 
 private:
-    // Método para listar modelos
     void fetchModels();
 
     // Widgets
@@ -79,13 +75,9 @@ private:
     QSpinBox *maxTokensSpinBox;
     QPushButton *connectButton;
 
-    // Gestor de red para conexiones API
     QNetworkAccessManager networkManager;
     QPointer<QNetworkReply> currentReply;
-
-    // Almacenamiento de descripciones de modelos
     QMap<QString, QString> modelDescriptions;
-
 
     QString getModelDescription(const QString &modelId);
 };
@@ -104,9 +96,6 @@ public:
 
 private:
     QPointer<DeepSeekOptionsPageWidget> m_widget;
-    // Utils::FilePath m_categoryIconPath;
-
-    // Método para cargar configuraciones
     void loadSettings();
 };
 

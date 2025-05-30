@@ -83,7 +83,6 @@ DeepSeekNavigationChat::DeepSeekNavigationChat(): Core::INavigationWidgetFactory
     setPriority(100);
     setId("DeepSeek.Chat");
 
-    // Conectar cambios en las configuraciones
     connect(DSS::inst(), &DeepSeekSettings::settingsChanged,
             this, &DeepSeekNavigationChat::onSettingsChanged);
 
@@ -93,34 +92,9 @@ DeepSeekNavigationChat::DeepSeekNavigationChat(): Core::INavigationWidgetFactory
 DeepSeekNavigationChat::~DeepSeekNavigationChat() {}
 
 void DeepSeekNavigationChat::onSettingsChanged(){
-    // Podemos reaccionar a cambios en las configuraciones si es necesario
     qDebug() << "DeepSeek settings changed";
 }
 
-// void DeepSeekNavigationChat::updateSettings(const QSettings &settings)
-// {
-//     QString newApiUrl = settings.value("ApiUrl", "https://api.deepseek.com/v1").toString();
-//     QString newApiKey = settings.value("ApiKey", "").toString();
-//     QString newModel = settings.value("Model", "deepseek-chat").toString();
-//     QString newSystemPrompt = settings.value("SystemPrompt", "You are a helpful AI assistant").toString();
-//     double newTemperature = settings.value("Temperature", 0.7).toDouble();
-//     int newMaxTokens = settings.value("MaxTokens", 2048).toInt();
-
-//     bool changed = (newApiUrl != m_apiUrl) || (newApiKey != m_apiKey) ||
-//                    (newModel != m_model) || (newSystemPrompt != m_systemPrompt) ||
-//                    (newTemperature != m_temperature) || (newMaxTokens != m_maxTokens);
-
-//     m_apiUrl = newApiUrl;
-//     m_apiKey = newApiKey;
-//     m_model = newModel;
-//     m_systemPrompt = newSystemPrompt;
-//     m_temperature = newTemperature;
-//     m_maxTokens = newMaxTokens;
-
-//     if (changed) {
-//         emit settingsChanged();
-//     }
-// }
 
 Core::NavigationView DeepSeekNavigationChat::createWidget()
 {
@@ -152,7 +126,6 @@ Core::NavigationView DeepSeekNavigationChat::createWidget()
     return {m_widget, {}};
 }
 
-// Modificar onSendClicked para usar las configuraciones actuales
 void DeepSeekNavigationChat::onSendClicked(){
     const QString message = m_inputLine->text().trimmed();
     if (message.isEmpty()) return;
@@ -162,7 +135,6 @@ void DeepSeekNavigationChat::onSendClicked(){
         appendToChatHistory("Error", settings->validationError());
         return;
     }
-
     appendToChatHistory("You", message);
 
     QJsonObject payload;
@@ -178,122 +150,13 @@ void DeepSeekNavigationChat::onSendClicked(){
     m_inputLine->clear();
 }
 
-// void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJsonObject &payload)
-// {
-//     auto settings = DSS::inst();
-
-//     // Verificar configuración básica
-//     if (!settings->isValid()) {
-//         appendToChatHistory("Error", settings->validationError());
-//         return;
-//     }
-
-//     // // Construir URL correctamente
-//     // QUrl apiUrl(settings->apiUrl());
-
-//     // // Normalizar la URL base
-//     // QString basePath = apiUrl.path();
-//     // if (!basePath.endsWith("/v1")) {
-//     //     if (basePath.isEmpty() || basePath == "/") {
-//     //         basePath = "/v1";
-//     //     } else {
-//     //         basePath = basePath.endsWith("/") ? basePath + "v1" : basePath + "/v1";
-//     //     }
-//     //     apiUrl.setPath(basePath);
-//     // }
-
-//     // // Añadir endpoint asegurando una sola barra
-//     // QString fullPath = apiUrl.path();
-//     // if (!fullPath.endsWith('/')) {
-//     //     fullPath += '/';
-//     // }
-//     // fullPath += endpoint.startsWith('/') ? endpoint.mid(1) : endpoint;
-//     // apiUrl.setPath(fullPath);
-
-//     // Versión alternativa usando QUrl::resolved()
-//     QUrl baseUrl(settings->apiUrl());
-//     if (!baseUrl.path().endsWith("/v1")) {
-//         QUrl v1Url;
-//         v1Url.setPath("/v1");
-//         baseUrl = baseUrl.resolved(v1Url);
-//     }
-
-//     // Construir URL completa
-//     QUrl apiUrl = baseUrl;
-//     QUrl endpointUrl;
-//     endpointUrl.setPath(endpoint.startsWith('/') ? endpoint : "/" + endpoint);
-//     apiUrl = apiUrl.resolved(endpointUrl);
-
-
-//     // Verificar URL final
-//     if (!apiUrl.isValid()) {
-//         appendToChatHistory("Error", tr("Invalid API URL: %1").arg(apiUrl.toString()));
-//         return;
-//     }
-
-//     qDebug() << "Sending request to:" << apiUrl.toString();
-
-//     // Configurar headers
-//     QNetworkRequest request(apiUrl);
-//     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-//     request.setRawHeader("Accept", "application/json");
-
-//     if (!settings->apiKey().isEmpty()) {
-//         request.setRawHeader("Authorization",
-//                              QString("Bearer %1").arg(settings->apiKey()).toUtf8());
-//     }
-
-//     // Construir cuerpo de la petición según especificación de DeepSeek API
-//     QJsonObject requestBody;
-//     requestBody["model"] = settings->model();
-//     requestBody["messages"] = QJsonArray({
-//         QJsonObject({
-//             {"role", "user"},
-//             {"content", payload["message"].toString()}
-//         })
-//     });
-
-//     // Parámetros opcionales
-//     if (settings->temperature() > 0) {
-//         requestBody["temperature"] = settings->temperature();
-//     }
-//     if (settings->maxTokens() > 0) {
-//         requestBody["max_tokens"] = settings->maxTokens();
-//     }
-//     if (!settings->systemPrompt().isEmpty()) {
-//         requestBody["system_prompt"] = settings->systemPrompt();
-//     }
-
-//     // Enviar petición
-//     QNetworkReply *reply = m_networkManager->post(
-//         request,
-//         QJsonDocument(requestBody).toJson()
-//         );
-
-//     connect(reply, &QNetworkReply::finished,
-//             this, [this, reply]() { handleApiReply(reply); });
-
-//     // Timeout de 30 segundos
-//     QTimer::singleShot(30000, reply, [reply]() {
-//         if (reply->isRunning()) {
-//             reply->abort();
-//         }
-//     });
-// }
-
-void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJsonObject &payload)
-{
+void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJsonObject &payload){
     auto settings = DSS::inst();
 
-    // Construir URL base correctamente
     QUrl apiUrl(settings->apiUrl());
 
-    // Asegurar que la URL base sea correcta
-    if (!apiUrl.path().endsWith("/v1")) {
-        apiUrl.setPath("/v1");
-    }
+    if (!apiUrl.path().endsWith("/v1")){ apiUrl.setPath("/v1"); }
 
-    // Usar el endpoint correcto para chat
     QString fullPath = apiUrl.path() + "/chat/completions";
     apiUrl.setPath(fullPath);
 
@@ -302,7 +165,6 @@ void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJson
         return;
     }
 
-    // Crear la petición con headers adecuados
     QNetworkRequest request(apiUrl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -311,14 +173,10 @@ void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJson
                              QString("Bearer %1").arg(settings->apiKey()).toUtf8());
     }
 
-    // Construir el payload según la especificación de DeepSeek API
     QJsonObject fullPayload;
     fullPayload["model"] = settings->model();
 
-    // Construir el array de mensajes
     QJsonArray messagesArray;
-
-    // Añadir system prompt si existe
     if (!settings->systemPrompt().isEmpty()) {
         messagesArray.append(QJsonObject{
             {"role", "system"},
@@ -326,8 +184,7 @@ void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJson
         });
     }
 
-    // Añadir historial de conversación
-    for (const auto &item : m_conversationHistory) {
+    for (const auto &item : qAsConst(m_conversationHistory) ) {
         if (item.isObject()) {
             QJsonObject obj = item.toObject();
             messagesArray.append(QJsonObject{
@@ -337,7 +194,6 @@ void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJson
         }
     }
 
-    // Añadir el mensaje actual
     messagesArray.append(QJsonObject{
         {"role", "user"},
         {"content", payload["message"].toString()}
@@ -347,7 +203,6 @@ void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJson
     fullPayload["temperature"] = settings->temperature();
     fullPayload["max_tokens"] = settings->maxTokens();
 
-    // Enviar la petición
     QNetworkReply *reply = m_networkManager->post(
         request,
         QJsonDocument(fullPayload).toJson()
@@ -356,7 +211,6 @@ void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJson
     connect(reply, &QNetworkReply::finished,
             this, [this, reply]() { handleApiReply(reply); });
 
-    // Timeout de 30 segundos
     QTimer::singleShot(30000, reply, [reply]() {
         if (reply->isRunning()) {
             reply->abort();
@@ -364,83 +218,7 @@ void DeepSeekNavigationChat::sendApiRequest(const QString &endpoint, const QJson
     });
 }
 
-// void DeepSeekNavigationChat::handleApiReply(QNetworkReply *reply)
-// {
-//     reply->deleteLater();
-//     const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-//     const QByteArray responseData = reply->readAll();
-
-//     if (reply->error() != QNetworkReply::NoError) {
-//         QString errorMsg;
-
-//         if (reply->error() == QNetworkReply::OperationCanceledError) {
-//             errorMsg = tr("Request timed out");
-//         } else {
-//             errorMsg = tr("HTTP %1: %2").arg(statusCode).arg(reply->errorString());
-//         }
-
-//         // Procesar cuerpo de error si existe
-//         if (!responseData.isEmpty()) {
-//             QJsonParseError parseError;
-//             QJsonDocument doc = QJsonDocument::fromJson(responseData, &parseError);
-
-//             if (parseError.error == QJsonParseError::NoError && doc.isObject()) {
-//                 QJsonObject errorObj = doc.object();
-//                 if (errorObj.contains("error")) {
-//                     errorMsg += "\n" + errorObj["error"].toString();
-//                 } else if (errorObj.contains("message")) {
-//                     errorMsg += "\n" + errorObj["message"].toString();
-//                 } else {
-//                     errorMsg += "\n" + QString::fromUtf8(responseData);
-//                 }
-//             } else {
-//                 errorMsg += "\n" + QString::fromUtf8(responseData);
-//             }
-//         }
-
-//         appendToChatHistory("Error", errorMsg);
-//         return;
-//     }
-
-//     // Procesar respuesta exitosa
-//     QJsonParseError parseError;
-//     QJsonDocument doc = QJsonDocument::fromJson(responseData, &parseError);
-
-//     if (parseError.error != QJsonParseError::NoError) {
-//         appendToChatHistory("Error",
-//                             tr("Invalid JSON response: %1").arg(parseError.errorString()));
-//         return;
-//     }
-
-//     if (!doc.isObject()) {
-//         appendToChatHistory("Error", tr("Unexpected response format"));
-//         return;
-//     }
-
-//     QJsonObject responseObj = doc.object();
-
-//     // Procesar según formato esperado de DeepSeek API v1
-//     if (responseObj.contains("choices") && responseObj["choices"].isArray()) {
-//         QJsonArray choices = responseObj["choices"].toArray();
-//         if (!choices.isEmpty()) {
-//             QJsonObject choice = choices.first().toObject();
-//             if (choice.contains("message") && choice["message"].isObject()) {
-//                 QJsonObject message = choice["message"].toObject();
-//                 QString content = message["content"].toString();
-//                 appendToChatHistory("DeepSeek", content);
-//                 saveConversationHistory(m_inputLine->text(), content);
-//                 return;
-//             }
-//         }
-//     }
-
-//     // Si no coincide con el formato esperado, mostrar respuesta completa
-//     appendToChatHistory("Error", tr("Unexpected API response: %1")
-//                                      .arg(QString::fromUtf8(responseData)));
-// }
-
-void DeepSeekNavigationChat::handleApiReply(QNetworkReply *reply)
-{
+void DeepSeekNavigationChat::handleApiReply(QNetworkReply *reply){
     reply->deleteLater();
 
     if (reply->error() != QNetworkReply::NoError) {

@@ -70,10 +70,7 @@ class DeepSeekNavigationChat : public Core::INavigationWidgetFactory
 public:
     DeepSeekNavigationChat();
     ~DeepSeekNavigationChat() override;
-
     Core::NavigationView createWidget() override;
-
-    // void updateSettings(const QSettings &settings);
 
 protected:
     void handleGenericEditor(Core::IDocument *document, const QString &text);
