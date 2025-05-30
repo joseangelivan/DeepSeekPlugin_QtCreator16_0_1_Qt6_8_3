@@ -1,15 +1,38 @@
-// deepseeknavigationchat.h
 #pragma once
-
 #include <coreplugin/inavigationwidgetfactory.h>
 #include <coreplugin/editormanager/editormanager.h>
+#include <coreplugin/session.h>
+#include <texteditor/texteditor.h>
+#include <texteditor/textdocument.h>
+#include <utils/fileutils.h>
+#include <utils/qtcassert.h> // Para verificaciones adicionales
+#include <QString>
 #include <QNetworkAccessManager>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QFile>
 #include <QTextStream>
 #include <QMap>
 #include <QDialog>
 #include <QPointer>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QTextEdit>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QListWidget>
+#include <QLabel>
+#include <QFileInfo>
+#include <QDir>
+#include <QMessageBox>
+#include <QJsonDocument>
+#include <QDateTime>
+#include <QStandardPaths>
+#include <QNetworkReply>
+#include <QTimer>
+#include <projectexplorer/project.h>
+#include <projectexplorer/projectmanager.h>
+#include "deepseeksettings.h"
 
 QT_BEGIN_NAMESPACE
 class QTextEdit;
@@ -32,7 +55,7 @@ class DeepSeekPreviewDialog : public QDialog
 {
     Q_OBJECT
 public:
-    DeepSeekPreviewDialog(const QString &filePath, const QString &newContent, QWidget *parent = nullptr);
+    explicit DeepSeekPreviewDialog(const QString &filePath, const QString &newContent, QWidget *parent = nullptr);
     bool accepted() const;
 
 private:
@@ -49,36 +72,59 @@ public:
     ~DeepSeekNavigationChat() override;
 
     Core::NavigationView createWidget() override;
-    QString displayName() const override;
-    int priority() const override;
-    Utils::Id id() const override;
+
+    // void updateSettings(const QSettings &settings);
+
+protected:
+    void handleGenericEditor(Core::IDocument *document, const QString &text);
 
 private slots:
     void onSendClicked();
     void handleApiReply(QNetworkReply *reply);
+    void onSettingsChanged();
 
 private:
-    void sendApiRequest(const QString &endpoint, const QJsonObject &payload);
+    // File operations
     void applyEditToCurrentFile(const QString &text);
     void applyEditToFile(const QString &filePath, const QString &content);
+    void showPreviewDialog(const QString &filePath, const QString &newContent);
+
+    // Chat operations
     void appendToChatHistory(const QString &sender, const QString &text);
     void sendSourceAnalysisCommand(const QString &command);
     void updateContextMetadata(QJsonObject &payload);
+
+    // History management
     void loadConversationHistory();
     void saveConversationHistory(const QString &message, const QString &response);
-    void showPreviewDialog(const QString &filePath, const QString &newContent);
+    Utils::FilePath getHistoryFilePath() const;
+    QJsonObject getCurrentContext() const;
 
+    // API communication
+    void sendApiRequest(const QString &endpoint, const QJsonObject &payload);
+
+    // UI components
     QWidget *m_widget = nullptr;
     QLineEdit *m_inputLine = nullptr;
     QTextEdit *m_outputBox = nullptr;
     QPushButton *m_sendButton = nullptr;
     QListWidget *m_historyList = nullptr;
 
+    // Network
     QNetworkAccessManager *m_networkManager = nullptr;
+    QJsonArray m_conversationHistory;
 
-    QString m_apiUrl = "https://api.deepseek.dev";
-    QString m_apiKey = "YOUR_API_KEY";
+    // Configuration - ahora con valores por defecto más seguros
+    QString m_apiUrl = "";
+    QString m_apiKey = "";
+    QString m_model = "deepseek-chat";
+    QString m_systemPrompt = "You are a helpful AI assistant";
+    double m_temperature = 0.7;
+    int m_maxTokens = 2048;
     QString m_currentFile;
+
+signals:
+    void settingsChanged();
 };
 
 } // namespace DeepSeek

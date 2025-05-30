@@ -21,6 +21,8 @@
 #include <QMessageBox>
 
 #include "deepseekoptionspage.h"
+#include "deepseeknavigationchat.h"
+#include "deepseeksettings.h"
 
 using namespace Core;
 
@@ -34,7 +36,6 @@ class DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3Plugin final : public ExtensionSyste
 
 public:
     DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3Plugin() = default;
-
     ~DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3Plugin() final
     {
         // Unregister objects from the plugin manager's object pool
@@ -65,11 +66,14 @@ public:
         //     .setDefaultKeySequence(Tr::tr("Ctrl+Alt+Meta+A"))
         //     .addOnTriggered(this, &DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3Plugin::triggerAction);
 
+        DeepSeek::DSS::inst();
 
+        // Crear y registrar componentes
+        m_optionsPage = new DeepSeek::Internal::DeepSeekOptionsPage(this);
+        m_navigationChat = new DeepSeek::DeepSeekNavigationChat();
 
-        ExtensionSystem::PluginManager::addObject(new DeepSeek::Internal::DeepSeekOptionsPage);
-
-
+        ExtensionSystem::PluginManager::addObject(m_optionsPage);
+        ExtensionSystem::PluginManager::addObject(m_navigationChat);
     }
 
     void extensionsInitialized() final
@@ -96,6 +100,10 @@ private:
             Tr::tr("Action Triggered"),
             Tr::tr("This is an action from DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3."));
     }
+
+
+    DeepSeek::Internal::DeepSeekOptionsPage *m_optionsPage = nullptr;
+    DeepSeek::DeepSeekNavigationChat *m_navigationChat = nullptr;
 };
 
 } // namespace DeepSeekPlugin_QtCreator16_0_1_Qt6_8_3::Internal

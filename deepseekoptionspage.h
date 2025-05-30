@@ -31,6 +31,7 @@
 #include <QPointer>
 #include <QSettings>
 #include <QMessageBox>
+#include "deepseeksettings.h"
 
 namespace DeepSeek {
 namespace Internal {
@@ -94,7 +95,7 @@ class DeepSeekOptionsPage : public QObject, public Core::IOptionsPage
 {
      Q_OBJECT
 public:
-     explicit DeepSeekOptionsPage(/*QObject *parent = nullptr*/);
+     explicit DeepSeekOptionsPage(QObject *parent = nullptr);
     ~DeepSeekOptionsPage() override;
 
     QWidget *widget() override;
@@ -103,7 +104,7 @@ public:
 
 private:
     QPointer<DeepSeekOptionsPageWidget> m_widget;
-    Utils::FilePath m_categoryIconPath;
+    // Utils::FilePath m_categoryIconPath;
 
     // Método para cargar configuraciones
     void loadSettings();

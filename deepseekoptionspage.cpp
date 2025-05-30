@@ -236,43 +236,18 @@ void DeepSeekOptionsPageWidget::handleNetworkReply()
 }
 
 
-DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ /*QObject *parent*/):
+DeepSeekOptionsPage::DeepSeekOptionsPage(/*DeepSeekSettings *settings,*/ QObject *parent):
     Core::IOptionsPage(), // Changed from IOptionsPageProvider to IOptionsPage
-    QObject(),
-      // m_settings(settings),
+    QObject(parent), m_widget(nullptr){
 
-      m_widget(nullptr)/*,
-      ui(nullptr)*/
-{
-
+    setId("DeepSeek.Settings");
+    setDisplayName(tr("DeepSeek"));
+    // Set default category
+    setCategory(Utils::Id("Z.DeepSeek"));
     // Registrar la categoría con su icono
     Core::IOptionsPage::registerCategory("Z.DeepSeek",
                                          tr("DeepSeek"),
                                          Utils::FilePath(":/images/deepseek.png"));
-
-    setId("DeepSeek.Settings");
-    setDisplayName(tr("DeepSeek"));
-
-
-
-
-    // Set default category
-    setCategory(Utils::Id("Z.DeepSeek"));
-
-    // setCategoryIconPath(":/deepseekplugin/icon.png");
-
-    // setDisplayCategory(QObject::tr("DeepSeekr"));
-
-
-
-
-    // Store parent for safe deletions
-    // setParent(parent);
-
-    setId("DeepSeek.Settings");
-    setDisplayName(tr("DeepSeek"));
-    setCategory(Utils::Id("Z.DeepSeek"));
-
 }
 
 DeepSeekOptionsPage::~DeepSeekOptionsPage()
@@ -280,32 +255,40 @@ DeepSeekOptionsPage::~DeepSeekOptionsPage()
     // delete ui;
 }
 
-// Método para cargar configuraciones
-void DeepSeekOptionsPage::loadSettings()
-{
-    if (!m_widget)
-        return;
+// // Método para cargar configuraciones
+void DeepSeekOptionsPage::loadSettings(){
+    //     if (!m_widget)
+    //         return;
 
-    auto settings = Core::ICore::settings();
-    settings->beginGroup("DeepSeek");
+    //     auto settings = Core::ICore::settings();
+    //     settings->beginGroup("DeepSeek");
 
-    m_widget->setApiKey(settings->value("ApiKey", "").toString());
-    m_widget->setApiUrl(settings->value("ApiUrl", "https://api.deepseek.com/v1").toString());
-    m_widget->setModel(settings->value("Model", "Without Model").toString());
-    m_widget->setSystemPrompt(settings->value("SystemPrompt", "You are a helpful AI assistant").toString());
-    m_widget->setTemperature(settings->value("Temperature", 0.7).toDouble());
-    m_widget->setMaxTokens(settings->value("MaxTokens", 2048).toInt());
+    //     m_widget->setApiKey(settings->value("ApiKey", "").toString());
+    //     m_widget->setApiUrl(settings->value("ApiUrl", "https://api.deepseek.com/v1").toString());
+    //     m_widget->setModel(settings->value("Model", "Without Model").toString());
+    //     m_widget->setSystemPrompt(settings->value("SystemPrompt", "You are a helpful AI assistant").toString());
+    //     m_widget->setTemperature(settings->value("Temperature", 0.7).toDouble());
+    //     m_widget->setMaxTokens(settings->value("MaxTokens", 2048).toInt());
 
-    settings->endGroup();
+    //     settings->endGroup();
+    // Cargar configuraciones actuales
+    auto settings = DSS::inst();
+    m_widget->setApiKey(settings->apiKey());
+    m_widget->setApiUrl(settings->apiUrl().toString());
+    m_widget->setModel(settings->model());
+    m_widget->setSystemPrompt(settings->systemPrompt());
+    m_widget->setTemperature(settings->temperature());
+    m_widget->setMaxTokens(settings->maxTokens());
+
 }
 
 
 QWidget *DeepSeekOptionsPage::widget()
 {
     if (!m_widget) {
-         m_widget = new DeepSeekOptionsPageWidget;
+        m_widget = new DeepSeekOptionsPageWidget();
 
-        // Cargar configuraciones guardadas inmediatamente después de crear el widget
+        // Cargar configuraciones actuales
         loadSettings();
     }
     return qobject_cast<QWidget*>(m_widget);
@@ -326,15 +309,51 @@ void DeepSeekOptionsPage::apply()
     // // Use the global QSettings instance provided by Qt Creator
     // m_settings->saveSettings(Core::ICore::settings());
 
-    auto settings = Core::ICore::settings();
-    settings->beginGroup("DeepSeek");
-    settings->setValue("ApiKey", m_widget->apiKey());
-    settings->setValue("ApiUrl", m_widget->apiUrl());
-    settings->setValue("Model", m_widget->model());
-    settings->setValue("SystemPrompt", m_widget->systemPrompt());
-    settings->setValue("Temperature", m_widget->temperature());
-    settings->setValue("MaxTokens", m_widget->maxTokens());
-    settings->endGroup();
+    // auto settings = Core::ICore::settings();
+    // settings->beginGroup("DeepSeek");
+    // settings->setValue("ApiKey", m_widget->apiKey());
+    // settings->setValue("ApiUrl", m_widget->apiUrl());
+    // settings->setValue("Model", m_widget->model());
+    // settings->setValue("SystemPrompt", m_widget->systemPrompt());
+    // settings->setValue("Temperature", m_widget->temperature());
+    // settings->setValue("MaxTokens", m_widget->maxTokens());
+    // settings->endGroup();
+
+    // // Guardar todos los valores primero
+    // const QString apiKey = m_widget->apiKey();
+    // const QUrl apiUrl = QUrl(m_widget->apiUrl());
+    // const QString model = m_widget->model();
+    // const QString systemPrompt = m_widget->systemPrompt();
+    // const double temperature = m_widget->temperature();
+    // const int maxTokens = m_widget->maxTokens();
+
+
+    // // Aplicar los valores guardados
+    // auto settings = DSS::inst();
+    // settings->setApiKey(apiKey);
+    // settings->setApiUrl(apiUrl);
+    // settings->setModel(model);
+    // settings->setSystemPrompt(systemPrompt);
+    // settings->setTemperature(temperature);
+    // settings->setMaxTokens(maxTokens);
+
+    auto settings = DSS::inst();
+    // QMessageBox::information(nullptr, "Debug", "1");
+    settings->setApiKey(m_widget->apiKey());
+    // QMessageBox::information(nullptr, "Debug", "2");
+
+    settings->setApiUrl(QUrl(m_widget->apiUrl()));
+    // QMessageBox::information(nullptr, "Debug", "3");
+    settings->setModel(m_widget->model());
+    // QMessageBox::information(nullptr, "Debug", "4");
+    settings->setSystemPrompt(m_widget->systemPrompt());
+    // QMessageBox::information(nullptr, "Debug", "5");
+    settings->setTemperature(m_widget->temperature());
+    // QMessageBox::information(nullptr, "Debug", "6");
+    settings->setMaxTokens(m_widget->maxTokens());
+    // QMessageBox::information(nullptr, "Debug", "7");
+
+    settings->save();
 }
 
 void DeepSeekOptionsPage::finish()
